@@ -1,0 +1,1619 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vistrip Denemarken 🎣🚐</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --card-border: #334155;
+            --primary: #38bdf8;
+            --primary-hover: #0284c7;
+            --accent: #f59e0b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --success: #22c55e;
+            --danger: #ef4444;
+            --radius: 12px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            padding: 16px 12px;
+            max-width: 960px;
+            margin: 0 auto;
+            line-height: 1.5;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 18px 16px;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        header h1 {
+            font-size: 1.7rem;
+            color: var(--primary);
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            overflow-x: auto;
+            padding-bottom: 6px;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .tab-btn {
+            background-color: var(--card-bg);
+            color: var(--text-muted);
+            border: 1px solid var(--card-border);
+            padding: 10px 14px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.88rem;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .tab-btn.active {
+            background-color: var(--primary);
+            color: #0f172a;
+            border-color: var(--primary);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius);
+            padding: 16px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--card-border);
+            padding-bottom: 10px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .card-title {
+            font-size: 1.15rem;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 700;
+        }
+
+        .badge {
+            background-color: var(--accent);
+            color: #000;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        .maps-btn {
+            background-color: rgba(56, 189, 248, 0.15);
+            color: var(--primary);
+            border: 1px solid var(--primary);
+            padding: 5px 12px;
+            border-radius: 16px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .maps-btn:hover {
+            background-color: var(--primary);
+            color: #0f172a;
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px dashed var(--card-border);
+        }
+
+        .timeline-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .time {
+            font-weight: bold;
+            color: var(--accent);
+            min-width: 105px;
+            font-size: 0.88rem;
+        }
+
+        .desc {
+            color: var(--text-main);
+            font-size: 0.92rem;
+        }
+
+        .checklist {
+            list-style: none;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            cursor: pointer;
+        }
+
+        .checklist-item input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--primary);
+            cursor: pointer;
+        }
+
+        .checklist-item.done span, .checklist-item.done div {
+            text-decoration: line-through;
+            color: var(--text-muted);
+        }
+
+        .location-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            flex-grow: 1;
+        }
+
+        .location-name {
+            font-weight: bold;
+            color: var(--text-main);
+        }
+
+        .location-sub {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+        }
+
+        .converter-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        label {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+        }
+
+        input[type="number"], input[type="text"], select {
+            background-color: var(--bg-color);
+            border: 1px solid var(--card-border);
+            color: var(--text-main);
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            width: 100%;
+        }
+
+        .food-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 12px;
+        }
+
+        .meal-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--card-border);
+            padding: 12px;
+            border-radius: 8px;
+        }
+
+        .meal-title {
+            color: var(--accent);
+            font-weight: bold;
+            margin-bottom: 6px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 8px 10px;
+            border-bottom: 1px solid var(--card-border);
+        }
+
+        th {
+            color: var(--primary);
+            font-size: 0.85rem;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: #0f172a;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .btn-danger {
+            background-color: var(--danger);
+            color: white;
+            border: none;
+            padding: 4px 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        .btn-danger:hover {
+            background-color: #dc2626;
+        }
+
+        .btn-small {
+            background-color: var(--card-bg);
+            border: 1px solid var(--card-border);
+            color: var(--primary);
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .weight-chip {
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--card-border);
+            color: var(--text-main);
+            padding: 6px 10px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+
+        .weight-chip.selected {
+            background-color: var(--accent);
+            color: #000;
+            border-color: var(--accent);
+            font-weight: bold;
+        }
+
+        .preset-chip {
+            background-color: rgba(255, 255, 255, 0.08);
+            border: 1px solid var(--card-border);
+            color: var(--text-main);
+            padding: 6px 12px;
+            border-radius: 16px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .preset-chip:hover {
+            background-color: var(--primary);
+            color: #0f172a;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .summary-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--card-border);
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .summary-val {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: var(--accent);
+            margin-top: 4px;
+        }
+
+        .settle-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid var(--success);
+            padding: 10px 14px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .expense-table {
+            width: 100%;
+            margin-top: 8px;
+            border-collapse: collapse;
+            font-size: 0.88rem;
+        }
+
+        .expense-table th, .expense-table td {
+            padding: 10px 8px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 6px;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            background: rgba(255,255,255,0.03);
+            padding: 6px 10px;
+            border-radius: 6px;
+            border: 1px solid var(--card-border);
+        }
+
+        .weather-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .weather-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--card-border);
+            padding: 12px;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .wind-legend {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .wind-box {
+            padding: 8px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            border: 1px solid var(--card-border);
+        }
+
+        .leaderboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .podium-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .podium-rank {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+
+        .podium-name {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin: 4px 0;
+        }
+
+        .podium-score {
+            font-size: 0.95rem;
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        .assign-select {
+            background-color: var(--bg-color);
+            border: 1px solid var(--card-border);
+            color: var(--text-main);
+            padding: 3px 6px;
+            border-radius: 6px;
+            font-size: 0.78rem;
+            margin-left: auto;
+            width: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>🎣 VISTRIP DENEMARKEN 🚐</h1>
+        <p>Wout • Marcel • Robin • Dion | Camper Tour & Vissen</p>
+    </header>
+
+    <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab(event, 'schema')">📅 Schema</button>
+        <button class="tab-btn" onclick="switchTab(event, 'locaties')">📞 Reserveren</button>
+        <button class="tab-btn" onclick="switchTab(event, 'kosten')">💰 Kosten & Verdelen</button>
+        <button class="tab-btn" onclick="switchTab(event, 'vangsten')">🐟 Vangsten & Records</button>
+        <button class="tab-btn" onclick="switchTab(event, 'weer')">🌤️ Weer & Wind</button>
+        <button class="tab-btn" onclick="switchTab(event, 'eten')">🍔 Eten & Horeca</button>
+        <button class="tab-btn" onclick="switchTab(event, 'inpakken')">🎒 Inpaklijst</button>
+        <button class="tab-btn" onclick="switchTab(event, 'valuta')">💶 DKK / EUR</button>
+        <button class="tab-btn" onclick="switchTab(event, 'woorden')">🇩🇰 Woordenboek</button>
+    </div>
+
+    <!-- TAB 1: REISSCHEMA -->
+    <div id="schema" class="tab-content active">
+        <div class="card">
+            <div class="card-header">
+                <div>
+                    <span class="card-title">WO 04-NOV</span>
+                    <span class="badge">Vertrek (340 km)</span>
+                </div>
+                <a class="maps-btn" href="https://www.google.com/maps/search/?api=1&query=Camperstelle+Deutschland" target="_blank" rel="noopener">🗺️ Navigeer</a>
+            </div>
+            <div class="timeline-item">
+                <span class="time">20:00 - 23:30</span>
+                <span class="desc">Rit Tilburg ➔ Camperplaats Duitsland (340 km)</span>
+            </div>
+            <div class="timeline-item">
+                <span class="time">Nacht</span>
+                <span class="desc">Overnachting op camperplaats Duitsland (stroom/sanitair)</span>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <div>
+                    <span class="card-title">DO 05-NOV</span>
+                    <span class="badge">Oxriver (500 km)</span>
+                </div>
+                <a class="maps-btn" href="https://www.google.com/maps/search/?api=1&query=Oxriver+Put+Take+Struer" target="_blank" rel="noopener">🗺️ Navigeer Oxriver</a>
+            </div>
+            <div class="timeline-item">
+                <span class="time">08:30 - 14:00</span>
+                <span class="desc">Rustig opstaan/ontbijt & Rit Duitsland ➔ Oxriver (500 km)</span>
+            </div>
+            <div class="timeline-item">
+                <span class="time">14:00 - 14:30</span>
+                <span class="desc">Inpluggen op Oxriver (aan de stroom)</span>
+            </div>
+            <div class="timeline-item">
+                <span class="time">14:30 - 23:00</span>
+                <span class="desc">Vissen Oxriver Put & Take</span>
+            </div>
+            <div class="timeline-item">
+                <span class="time">Nacht</span>
+                <span class="desc">Overnachting Oxriver (aan de stroom)</span>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <div>
+                    <span class="card-title">VR 06-NOV</span>
+                    <span class="badge">Marathonsessie</span>
+                </div>
+                <a class="maps-btn" href="https://www.google.com/maps/search/?api=1&query=Oxriver+Put+Take+Struer" target="_blank" rel="noopener">🗺️ Navigeer Oxriver</a>
+            </div>
+            <div class="timeline-item">
+                <span class="time">05:00 - 23:00</span>
+                <span class="desc">Marathonsessie Vissen Oxriver</span>
+            </div>
+            <div class="timeline-item">
+                <span class="time">Nacht</span>
+                <span class="desc">Overnachting Oxriver (aan de stroom)</span>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <div>
+                    <span class="card-title">ZA 07-NOV</span>
+                    <span class="badge">Oxriver & Kust (40 km)</span>
+                </div>
+                <div style="display:flex; gap:4px; flex-wrap:wrap;">
+                    <a class="maps-btn" href="https://www.google.com/maps/search/?api=1&query=Thorsminde+Havn" target="_blank" rel="noopener">🗺️ Thorsminde</a>
+                    <a class="maps-btn" href="https://www.google.com/maps/search/?api=1&query=Loch+Nees+Put+Take" target="_blank" rel="noopener">🗺️ Loch Nees</a>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <span class="time">05:00 - 11:00</span>
+                <span class="desc">Ochtendsessie Oxriver</span>
+            </div>
+            <div class="timeline-item">
+                <span class="time">11:00 - 11:30</span>
+                <span class="desc">Rit Oxriver ➔ Kust (40 km)</span>
+            </div>
+            <div class="timeline-item">
+                <span class="time">11:30 - 20:00</span>
+                <span class="desc">Vissen Thorsminde (zee) OF Loch Nees (windafhankelijk)</span>
+            </div>
+            <div class="timeline-item">
+                <span class="time">Nacht</span>
+                <span class="desc">Overnachting Camperplaats Thorsminde Haven (kade/stroom)</span>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <div>
+                    <span class="card-title">ZO 08-NOV</span>
+                    <span class="badge">Tusaagaard (95 km)</span>
+                </div>
+                <a class="maps-btn" href="https://www.google.com/maps/search/?api=1&query=Tusaagaard+Put+Take+Karup" target="_blank" rel="noopener">🗺️ Navigeer Tusaagaard</a>
+            </div>
+            <div class="timeline-item">
+                <span class="time">06:30 - 08:00</span>
+                <span class="desc">Rit Thorsminde ➔ Tusaagaard (95 km)</span>
+            </div>
+            <div class="timeline-item">
+                <span class="time">08:00 - 22:00</span>
+                <span class="desc">Vissen Tusaagaard Put & Take</span>
+            </div>
+            <div class="timeline-item">
+                <span class="time">Nacht</span>
+                <span class="desc">Overnachting Tusaagaard (aan de stroom)</span>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <div>
+                    <span class="card-title">MA 09-NOV</span>
+                    <span class="badge">Arrild & Uiteten (170 km)</span>
+                </div>
+                <a class="maps-btn" href="https://www.google.com/maps/search/?api=1&query=Arrild+Fiskeso" target="_blank" rel="noopener">🗺️ Navigeer Arrild</a>
+            </div>
+            <div class="timeline-item">
+                <span class="time">05:00 - 11:00</span>
+                <span class="desc">Ochtendsessie Tusaagaard</span>
+            </div>
+            <div class="timeline-item">
+                <span class="time">11:00 - 13:30</span>
+                <span class="desc">Rit Tusaagaard ➔ Arrild (170 km)</span>
+            </div>
+            <div class="timeline-item">
+                <span class="time">13:30 - 19:00</span>
+                <span class="desc">OPTIONEEL: Vissen Arrild (afhankelijk van energie/vangst)</span>
+            </div>
+            <div class="timeline-item">
+                <span class="time">19:00 - 21:30</span>
+                <span class="desc">🍽️ Uiteten bij Arrild!</span>
+            </div>
+            <div class="timeline-item">
+                <span class="time">Nacht</span>
+                <span class="desc">Overnachting Arrild Camping / Camperplaats (aan de stroom)</span>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <div>
+                    <span class="card-title">DI 10-NOV</span>
+                    <span class="badge">Terugreis (692 km)</span>
+                </div>
+                <a class="maps-btn" href="https://www.google.com/maps/search/?api=1&query=Tilburg" target="_blank" rel="noopener">🗺️ Naar Huis</a>
+            </div>
+            <div class="timeline-item">
+                <span class="time">09:30 - 13:30</span>
+                <span class="desc">Eerste deel terugreis Arrild ➔ Duitsland</span>
+            </div>
+            <div class="timeline-item">
+                <span class="time">13:30 - 14:30</span>
+                <span class="desc">🍔 Tussenstop: McDonald's langs de snelweg!</span>
+            </div>
+            <div class="timeline-item">
+                <span class="time">14:30 - 17:30</span>
+                <span class="desc">Tweede deel terugreis naar Tilburg</span>
+            </div>
+            <div class="timeline-item">
+                <span class="time">17:30</span>
+                <span class="desc">Thuis! 🎉</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB 2: CONTACT & RESERVEREN -->
+    <div id="locaties" class="tab-content">
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">🏕️ Campings & Vijvers Aanschrijven</span>
+            </div>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 12px;">Vink af zodra de reservering of informatieaanvraag verstuurd/bevestigd is:</p>
+            <ul class="checklist" id="location-checklist"></ul>
+        </div>
+    </div>
+
+    <!-- TAB 3: KOSTEN & VERDELEN -->
+    <div id="kosten" class="tab-content">
+        <div class="summary-grid">
+            <div class="summary-card">
+                <span style="font-size:0.8rem; color:var(--text-muted)">Totale Groepskosten</span>
+                <div class="summary-val" id="total-cost-val">€ 0.00</div>
+            </div>
+            <div class="summary-card">
+                <span style="font-size:0.8rem; color:var(--text-muted)">Kosten p.p. (4 personen)</span>
+                <div class="summary-val" id="avg-cost-val" style="color:var(--primary)">€ 0.00</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">➕ Uitgave Toevoegen</span>
+            </div>
+            
+            <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom: 8px;">Snelkeuze (Snel invullen):</p>
+            <div style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:14px;">
+                <button type="button" class="preset-chip" onclick="applyPreset('Tanken Duitsland', 90, 'EUR')">⛽ Tanken DE (€90)</button>
+                <button type="button" class="preset-chip" onclick="applyPreset('Tanken Denemarken', 680, 'DKK')">⛽ Tanken DK (680 kr)</button>
+                <button type="button" class="preset-chip" onclick="applyPreset('Visvergunning Oxriver', 450, 'DKK')">🎣 Visvergunning (450 kr)</button>
+                <button type="button" class="preset-chip" onclick="applyPreset('Boodschappen Supermarkt', 120, 'EUR')">🛒 Boodschappen (€120)</button>
+                <button type="button" class="preset-chip" onclick="applyPreset('Uiteten Arrild', 980, 'DKK')">🍽️ Uiteten Arrild (980 kr)</button>
+            </div>
+
+            <form onsubmit="addExpense(event)">
+                <div style="display:grid; grid-template-columns: 2fr 1fr 1fr; gap:10px; margin-bottom:10px;">
+                    <div class="form-group">
+                        <label for="exp-desc">Omschrijving</label>
+                        <input type="text" id="exp-desc" placeholder="bijv. Diesel, Visvergunning" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="exp-amount">Bedrag</label>
+                        <input type="number" step="0.01" id="exp-amount" placeholder="0.00" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="exp-currency">Valuta</label>
+                        <select id="exp-currency">
+                            <option value="EUR">Euro (€)</option>
+                            <option value="DKK">DKK (kr.)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div style="display:grid; grid-template-columns: 1fr 1.2fr; gap:10px; margin-bottom:14px;">
+                    <div class="form-group">
+                        <label for="exp-payer">Wie heeft betaald?</label>
+                        <select id="exp-payer">
+                            <option value="Wout">Wout</option>
+                            <option value="Marcel">Marcel</option>
+                            <option value="Robin">Robin</option>
+                            <option value="Dion">Dion</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <label>Verdeeld over:</label>
+                            <button type="button" class="btn-small" onclick="selectAllMembers(true)">Alles</button>
+                        </div>
+                        <div class="checkbox-group" id="exp-for-group">
+                            <label class="checkbox-label"><input type="checkbox" value="Wout" checked> Wout</label>
+                            <label class="checkbox-label"><input type="checkbox" value="Marcel" checked> Marcel</label>
+                            <label class="checkbox-label"><input type="checkbox" value="Robin" checked> Robin</label>
+                            <label class="checkbox-label"><input type="checkbox" value="Dion" checked> Dion</label>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-primary" style="width:100%">Uitgave Opslaan</button>
+            </form>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">🤝 Wie Betaalt Wie? (Minimale Transacties)</span>
+            </div>
+            <div id="settlement-list">
+                <p style="font-size:0.85rem; color:var(--text-muted)">Nog geen verrekeningen nodig.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">📊 Balans per Persoon</span>
+            </div>
+            <div style="overflow-x:auto;">
+                <table class="expense-table">
+                    <thead>
+                        <tr>
+                            <th>Naam</th>
+                            <th>Totaal Betaald</th>
+                            <th>Eigen Verbruik</th>
+                            <th>Netto Balans</th>
+                        </tr>
+                    </thead>
+                    <tbody id="person-balance-body"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">📜 Uitgaven Logboek</span>
+            </div>
+            <div style="overflow-x:auto;">
+                <table class="expense-table">
+                    <thead>
+                        <tr>
+                            <th>Omschrijving</th>
+                            <th>Invoer</th>
+                            <th>Euro (€)</th>
+                            <th>Betaald Door</th>
+                            <th>Verdeeld Over</th>
+                            <th>Actie</th>
+                        </tr>
+                    </thead>
+                    <tbody id="expense-list-body"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB 4: VANGSTENLOGBOEK & SCOREBORD -->
+    <div id="vangsten" class="tab-content">
+        <div class="leaderboard-grid">
+            <div class="podium-card">
+                <div class="podium-rank">👑 Aantalkoning</div>
+                <div class="podium-name" id="top-catcher-name">-</div>
+                <div class="podium-score" id="top-catcher-count">0 vissen</div>
+            </div>
+            <div class="podium-card">
+                <div class="podium-rank">🏆 Grootste Vis Record</div>
+                <div class="podium-name" id="top-length-name">-</div>
+                <div class="podium-score" id="top-length-val">0 cm</div>
+            </div>
+            <div class="podium-card">
+                <div class="podium-rank">⚖️ Zwaarste Categorie</div>
+                <div class="podium-name" id="top-weight-name">-</div>
+                <div class="podium-score" id="top-weight-val">-</div>
+            </div>
+            <div class="podium-card">
+                <div class="podium-rank">🎣 Totaal Groep</div>
+                <div class="podium-name" id="total-catches-val">0</div>
+                <div class="podium-score" style="color:var(--text-muted); font-size:0.8rem;" id="top-bait-val">Topaas: -</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">➕ Vangst Registreren</span>
+            </div>
+            <form onsubmit="addCatch(event)">
+                <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap:10px; margin-bottom:12px;">
+                    <div class="form-group">
+                        <label for="catch-angler">Visser</label>
+                        <select id="catch-angler">
+                            <option value="Wout">Wout</option>
+                            <option value="Marcel">Marcel</option>
+                            <option value="Robin">Robin</option>
+                            <option value="Dion">Dion</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="catch-species">Vissoort</label>
+                        <select id="catch-species">
+                            <optgroup label="🎣 Put & Take (Zoetwater)">
+                                <option value="Zalmforel">Zalmforel</option>
+                                <option value="Regenboogforel">Regenboogforel</option>
+                                <option value="Beekridder">Beekridder</option>
+                                <option value="Tijgerforel">Tijgerforel</option>
+                                <option value="Spaanse beekforel">Spaanse beekforel</option>
+                                <option value="Beekforel">Beekforel</option>
+                                <option value="Koperforel">Koperforel</option>
+                                <option value="Goudforel">Goudforel</option>
+                            </optgroup>
+                            <optgroup label="🌊 Kust & Zee (Zoutwater)">
+                                <option value="Gul">Gul</option>
+                                <option value="Schar">Schar</option>
+                                <option value="Wijting">Wijting</option>
+                                <option value="Bot">Bot</option>
+                                <option value="Schol">Schol</option>
+                                <option value="Haring">Haring</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="catch-length">Lengte (cm)</label>
+                        <input type="number" step="0.5" id="catch-length" placeholder="bijv. 55" required>
+                    </div>
+                </div>
+
+                <!-- Snelkeuze Gewicht -->
+                <div class="form-group" style="margin-bottom:14px;">
+                    <label>Snelkeuze Gewicht (Klik aan):</label>
+                    <input type="hidden" id="catch-weight-cat" value="Tot 500g">
+                    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap:6px; margin-top:4px;">
+                        <button type="button" class="weight-chip selected" onclick="selectWeightCat(this, 'Tot 500g', 0.4)">Tot 500g</button>
+                        <button type="button" class="weight-chip" onclick="selectWeightCat(this, '500g - 1kg', 0.75)">500g - 1kg</button>
+                        <button type="button" class="weight-chip" onclick="selectWeightCat(this, '1 - 2 kg', 1.5)">1 - 2 kg</button>
+                        <button type="button" class="weight-chip" onclick="selectWeightCat(this, '2 - 3 kg', 2.5)">2 - 3 kg</button>
+                        <button type="button" class="weight-chip" onclick="selectWeightCat(this, '3 - 4 kg', 3.5)">3 - 4 kg</button>
+                        <button type="button" class="weight-chip" onclick="selectWeightCat(this, '4 - 5 kg', 4.5)">4 - 5 kg</button>
+                        <button type="button" class="weight-chip" onclick="selectWeightCat(this, '5 - 6 kg', 5.5)">5 - 6 kg</button>
+                        <button type="button" class="weight-chip" onclick="selectWeightCat(this, '6 - 7 kg', 6.5)">6 - 7 kg</button>
+                        <button type="button" class="weight-chip" onclick="selectWeightCat(this, '7 - 8 kg', 7.5)">7 - 8 kg</button>
+                        <button type="button" class="weight-chip" onclick="selectWeightCat(this, '8 - 9 kg', 8.5)">8 - 9 kg</button>
+                        <button type="button" class="weight-chip" onclick="selectWeightCat(this, '9 - 10 kg', 9.5)">9 - 10 kg</button>
+                    </div>
+                </div>
+
+                <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap:10px; margin-bottom:14px;">
+                    <div class="form-group">
+                        <label for="catch-location">Locatie</label>
+                        <select id="catch-location">
+                            <option value="Oxriver Put & Take">Oxriver Put & Take</option>
+                            <option value="Thorsminde (Kust/Zee)">Thorsminde (Kust/Zee)</option>
+                            <option value="Loch Nees">Loch Nees</option>
+                            <option value="Tusaagaard Put & Take">Tusaagaard Put & Take</option>
+                            <option value="Arrild Fiskesø">Arrild Fiskesø</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="catch-bait">Aas / Kunstaas</label>
+                        <input type="text" id="catch-bait" placeholder="bijv. Powerbait Geel, Inline Lepel, Pier" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="catch-note">Opmerking (optioneel)</label>
+                        <input type="text" id="catch-note" placeholder="bijv. Machtige dril op UL!">
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-primary" style="width:100%">🏆 Vangst Opslaan & Scorebord Bijwerken</button>
+            </form>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">📜 Vangsten Logboek</span>
+            </div>
+            <div style="overflow-x:auto;">
+                <table class="expense-table">
+                    <thead>
+                        <tr>
+                            <th>Visser</th>
+                            <th>Vissoort</th>
+                            <th>Lengte</th>
+                            <th>Gewicht</th>
+                            <th>Aas</th>
+                            <th>Locatie</th>
+                            <th>Details</th>
+                            <th>Actie</th>
+                        </tr>
+                    </thead>
+                    <tbody id="catches-list-body"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB 5: WEER & WINDRADAR -->
+    <div id="weer" class="tab-content">
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">🌤️ Weer & Windgids Denemarken</span>
+                <span class="badge">Kust & Vijver Impact</span>
+            </div>
+            <p style="font-size:0.88rem; color:var(--text-muted); margin-bottom:12px;">
+                Wind is de doorslaggevende factor in West-Denemarken. Bij harde aanlandige wind aan de kust (Thorsminde) is uitwijken naar beschutte Put & Take meren (zoals Loch Nees of Oxriver) aan te raden.
+            </p>
+            
+            <div class="wind-legend">
+                <div class="wind-box" style="background:rgba(34,197,94,0.1); border-color:var(--success);">
+                    <strong style="color:var(--success);">0 - 3 Bft (0 - 19 km/h)</strong><br>
+                    Perfect voor Put & Take en vliegvissen. Kust is erg rustig.
+                </div>
+                <div class="wind-box" style="background:rgba(245,158,11,0.1); border-color:var(--accent);">
+                    <strong style="color:var(--accent);">4 - 5 Bft (20 - 38 km/h)</strong><br>
+                    Goed voor forelvijvers. Kust vraagt zwaarder spinnend / zeevissen.
+                </div>
+                <div class="wind-box" style="background:rgba(239,68,68,0.1); border-color:var(--danger);">
+                    <strong style="color:var(--danger);">6+ Bft (39+ km/h)</strong><br>
+                    Harde wind aan kust! Gebruik beschutte meren (Loch Nees).
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">🌍 Live Weer- & Windlinks per Locatie</span>
+            </div>
+            <div class="weather-grid">
+                <div class="weather-card">
+                    <div>
+                        <strong style="color:var(--primary); font-size:1.05rem;">Oxriver (Struer / Ringkøbing)</strong>
+                        <p style="font-size:0.8rem; color:var(--text-muted); margin-top:4px;">Do 05 & Vr 06 Nov • Beschut polder- en riviercomplex</p>
+                    </div>
+                    <div style="display:flex; flex-direction:column; gap:6px; margin-top:12px;">
+                        <a href="https://www.windy.com/56.300/8.500" target="_blank" rel="noopener" class="btn-primary" style="text-align:center; text-decoration:none;">Windy Windradar ↗</a>
+                        <a href="https://www.yr.no/en/forecast/daily-table/2-2613939/Denmark/Central%20Jutland/Holstebro/Ringk%C3%B8bing" target="_blank" rel="noopener" class="btn-small" style="text-align:center; text-decoration:none;">YR.no Voorspelling ↗</a>
+                    </div>
+                </div>
+
+                <div class="weather-card">
+                    <div>
+                        <strong style="color:var(--primary); font-size:1.05rem;">Thorsminde (Kust & Zee)</strong>
+                        <p style="font-size:0.8rem; color:var(--text-muted); margin-top:4px;">Za 07 Nov • Open kust, pier & spuisluizen</p>
+                    </div>
+                    <div style="display:flex; flex-direction:column; gap:6px; margin-top:12px;">
+                        <a href="https://www.windy.com/56.370/8.120" target="_blank" rel="noopener" class="btn-primary" style="text-align:center; text-decoration:none;">Windy Kustwind ↗</a>
+                        <a href="https://www.dmi.dk" target="_blank" rel="noopener" class="btn-small" style="text-align:center; text-decoration:none;">DMI.dk Deense Meteo ↗</a>
+                    </div>
+                </div>
+
+                <div class="weather-card">
+                    <div>
+                        <strong style="color:var(--primary); font-size:1.05rem;">Tusaagaard (Karup)</strong>
+                        <p style="font-size:0.8rem; color:var(--text-muted); margin-top:4px;">Zo 08 Nov • Karup Å vallei, beschutte bosmeren</p>
+                    </div>
+                    <div style="display:flex; flex-direction:column; gap:6px; margin-top:12px;">
+                        <a href="https://www.windy.com/56.300/9.100" target="_blank" rel="noopener" class="btn-primary" style="text-align:center; text-decoration:none;">Windy Windradar ↗</a>
+                        <a href="https://www.yr.no/en/forecast/daily-table/2-2619022/Denmark/Central%20Jutland/Viborg/Karup" target="_blank" rel="noopener" class="btn-small" style="text-align:center; text-decoration:none;">YR.no Voorspelling ↗</a>
+                    </div>
+                </div>
+
+                <div class="weather-card">
+                    <div>
+                        <strong style="color:var(--primary); font-size:1.05rem;">Arrild (Zuid-Jutland)</strong>
+                        <p style="font-size:0.8rem; color:var(--text-muted); margin-top:4px;">Ma 09 Nov • Grote vismeren & vliegvisrivier</p>
+                    </div>
+                    <div style="display:flex; flex-direction:column; gap:6px; margin-top:12px;">
+                        <a href="https://www.windy.com/55.150/9.000" target="_blank" rel="noopener" class="btn-primary" style="text-align:center; text-decoration:none;">Windy Windradar ↗</a>
+                        <a href="https://www.yr.no/en/forecast/daily-table/2-2624647/Denmark/Region%20Syddanmark/T%C3%B8nder/Arrild" target="_blank" rel="noopener" class="btn-small" style="text-align:center; text-decoration:none;">YR.no Voorspelling ↗</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB 6: ETEN & HORECA -->
+    <div id="eten" class="tab-content">
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">🍲 Diner & Horeca Planning (4 Personen)</span>
+            </div>
+            <div class="food-grid">
+                <div class="meal-card">
+                    <div class="meal-title">Burgers</div>
+                    <p style="font-size: 0.85rem; color: var(--text-muted);">4 hamburgers, 4 kipburgers & 8 zachte broodjes met saus, uien, tomaat & komkommer.</p>
+                </div>
+                <div class="meal-card">
+                    <div class="meal-title">Chili con Carne</div>
+                    <p style="font-size: 0.85rem; color: var(--text-muted);">2 potten chili (1 kg), 800g gehakt & zakjes aardappelpuree met water.</p>
+                </div>
+                <div class="meal-card">
+                    <div class="meal-title">Pasta Kip Pesto</div>
+                    <p style="font-size: 0.85rem; color: var(--text-muted);">Penne/macaroni, 600g kipblokjes, potje pesto & parmezaanse kaas.</p>
+                </div>
+                <div class="meal-card">
+                    <div class="meal-title">Shoarma</div>
+                    <p style="font-size: 0.85rem; color: var(--text-muted);">1 kg shoarma & 10 grote broodjes met knoflooksaus.</p>
+                </div>
+                <div class="meal-card">
+                    <div class="meal-title">🍽️ Uiteten Arrild</div>
+                    <p style="font-size: 0.85rem; color: var(--text-muted);">Lekker uiteten op de laatste avond in Denemarken!</p>
+                </div>
+                <div class="meal-card">
+                    <div class="meal-title">🍔 McDonald's</div>
+                    <p style="font-size: 0.85rem; color: var(--text-muted);">Snelle en verdiende McD stop tijdens de terugreis.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">🛒 Boodschappenlijst</span>
+            </div>
+            <ul class="checklist" id="food-checklist"></ul>
+        </div>
+    </div>
+
+    <!-- TAB 7: INPAKLIJST -->
+    <div id="inpakken" class="tab-content">
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">🎒 Vis- & Camper-uitrusting</span>
+            </div>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 12px;">
+                Vink af wat ingepakt is en wijs eventueel een verantwoordelijke toe:
+            </p>
+            <ul class="checklist" id="packing-checklist"></ul>
+        </div>
+    </div>
+
+    <!-- TAB 8: DKK / EUR CONVERTER -->
+    <div id="valuta" class="tab-content">
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">💶 Deense Kronen (DKK) ⇆ Euro (EUR)</span>
+            </div>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 12px;">Vaste spilkoers: 1 EUR ≈ 7.46 DKK</p>
+            <div class="converter-grid">
+                <div class="form-group">
+                    <label for="dkk-input">Deense Kronen (DKK / kr.)</label>
+                    <input type="number" id="dkk-input" placeholder="0" oninput="convertDkkToEur(this.value)">
+                </div>
+                <div class="form-group">
+                    <label for="eur-input">Euro (€)</label>
+                    <input type="number" id="eur-input" placeholder="0" oninput="convertEurToDkk(this.value)">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB 9: WOORDENBOEK -->
+    <div id="woorden" class="tab-content">
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">🇩🇰 Deens Handwoordenboek</span>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nederlands</th>
+                        <th>Deens</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Vis / Vissen</td><td>Fisk / At fiske</td></tr>
+                    <tr><td>Forel / Regenboogforel</td><td>Ørred / Regnbueørred</td></tr>
+                    <tr><td>Put & Take (Visvijver)</td><td>Put & Take / Fiskesø</td></tr>
+                    <tr><td>Visvergunning / Akte</td><td>Fiskekort / Fisketegn</td></tr>
+                    <tr><td>Aas / Kunstaas</td><td>Agn / Kunstagn</td></tr>
+                    <tr><td>Camperplaats</td><td>Autocamperplads</td></tr>
+                    <tr><td>Stroomaansluiting</td><td>Strømtilslutning</td></tr>
+                    <tr><td>Bedankt</td><td>Tak</td></tr>
+                    <tr><td>Proost!</td><td>Skål!</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // TAB SWITCHING
+        function switchTab(evt, tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            
+            document.getElementById(tabId).classList.add('active');
+            evt.currentTarget.classList.add('active');
+        }
+
+        // CURRENCY CONVERTER
+        const RATE = 7.46;
+        function convertDkkToEur(val) {
+            if(!val) { document.getElementById('eur-input').value = ''; return; }
+            document.getElementById('eur-input').value = (parseFloat(val) / RATE).toFixed(2);
+        }
+        function convertEurToDkk(val) {
+            if(!val) { document.getElementById('dkk-input').value = ''; return; }
+            document.getElementById('dkk-input').value = (parseFloat(val) * RATE).toFixed(2);
+        }
+
+        // DATA DEFINITIONS
+        const members = ["Wout", "Marcel", "Robin", "Dion"];
+
+        const locationItems = [
+            { title: "Tussenstop Camperplaats Duitsland", sub: "Wo 04-Nov • Noodzakelijk voor stroom & overnachting onderweg", maps: "https://www.google.com/maps/search/?api=1&query=Camperstelle+Deutschland" },
+            { title: "Oxriver Put & Take / Camperplaats", sub: "Do 05 & Vr 06-Nov • Overnachting + stroom bij de visvijver", maps: "https://www.google.com/maps/search/?api=1&query=Oxriver+Put+Take+Struer" },
+            { title: "Thorsminde Haven Camperplaats", sub: "Za 07-Nov • Kade camperplaats met stroomvoorziening", maps: "https://www.google.com/maps/search/?api=1&query=Thorsminde+Havn" },
+            { title: "Loch Nees Put & Take", sub: "Za 07-Nov • Uitwijkoptie bij harde wind aan de kust", maps: "https://www.google.com/maps/search/?api=1&query=Loch+Nees+Put+Take" },
+            { title: "Tusaagaard Put & Take / Camperplaats", sub: "Zo 08-Nov • Overnachting + stroom op het terrein", maps: "https://www.google.com/maps/search/?api=1&query=Tusaagaard+Put+Take+Karup" },
+            { title: "Arrild Fiskesø / Camping", sub: "Ma 09-Nov • Camperplaats met stroom & vismogelijkheden", maps: "https://www.google.com/maps/search/?api=1&query=Arrild+Fiskeso" },
+            { title: "Restaurant in Arrild", sub: "Ma 09-Nov • Tafel reserveren voor 4 personen voor de laatste avond", maps: "https://www.google.com/maps/search/?api=1&query=Restaurant+Arrild" }
+        ];
+
+        const foodItems = [
+            "Ontbijt: Kwark (4x 500g)",
+            "Ontbijt: Magere / Volle Yoghurt (2x 1 kg)",
+            "Groenten & Fruit: Tomaten (10 stuks)",
+            "Groenten & Fruit: Komkommers (4 stuks)",
+            "Groenten & Fruit: Uien (2 stuks)",
+            "Groenten & Fruit: Appels (1 zak)",
+            "Groenten & Fruit: Bananen (16 stuks)",
+            "Brood: Bollen / Broodjes (60 stuks)",
+            "Brood: Zachte burgerbroodjes (8 stuks)",
+            "Broodbeleg: Kaas (2 verpakkingen)",
+            "Broodbeleg: Salami",
+            "Broodbeleg: Kipfilet",
+            "Broodbeleg: Spek (2 verpakkingen)",
+            "Eieren (24 stuks)",
+            "Boter: Roomboter (1 pakje)",
+            "Boter: Smeerboter (1 pak)",
+            "Saus: Mayonaise (1x)",
+            "Saus: Curry (1x)",
+            "Saus: Knoflooksaus (1x)",
+            "Snacks: Pinda's (2x)",
+            "Snacks: Naturel chips (2x)",
+            "Snacks: Paprika chips (2x)",
+            "Snacks: Japanse mix (1x)",
+            "Diner (Burgers): Hamburgers (4 stuks)",
+            "Diner (Burgers): Kipburgers (4 stuks)",
+            "Diner (Chili): Chili con carne (2 potten, samen 1 kg)",
+            "Diner (Chili): Rundergehakt (800g)",
+            "Diner (Chili): Aardappelpuree zakjes (bereiding met water)",
+            "Diner (Pasta): Kipfilet/dij in blokjes (600g)",
+            "Diner (Pasta): Pesto (1 potje)",
+            "Diner (Pasta): Penne / Macaroni",
+            "Diner (Pasta): Parmezaanse kaas",
+            "Diner (Shoarma): Shoarma (1 kg)",
+            "Diner (Shoarma): Grote pita/shoarmabroodjes (10 stuks)",
+            "Drank: Bier grote flessen (5x)",
+            "Drank: Bier blikken (40x)",
+            "Drank: Cola blikjes (6x)",
+            "Drank: Cassis blikjes (6x)",
+            "Drank: Ice Tea (1 pak)",
+            "Zakgeld/Budget voor Uiteten bij Arrild",
+            "Zakgeld/Budget voor McDonald's op de terugreis"
+        ];
+
+        const packingItems = [
+            "Vishengels, molens & reserve spullen",
+            "Koffer met aas, haken, dobbers & spinners",
+            "Schepnet & onthakingstang",
+            "Warm & waterdicht pak / kleding",
+            "Thermo-ondergoed & dikke sokken",
+            "Hoofdlampjes & zaklampen",
+            "Camper CEE stekker / verlengsnoer",
+            "Paspoort, rijbewijs & kentekenbewijs",
+            "Vispas / Deense visakte (Fisketegn)",
+            "Powerbanks & laadkabels"
+        ];
+
+        // RENDER CHECKLISTS
+        function renderChecklists() {
+            // Locations
+            const locUl = document.getElementById('location-checklist');
+            const locSaved = JSON.parse(localStorage.getItem('denmark_location_checklist') || '{}');
+            locUl.innerHTML = locationItems.map((item, idx) => {
+                const isChecked = locSaved[idx] ? 'checked' : '';
+                const isDoneClass = locSaved[idx] ? 'done' : '';
+                return `
+                    <li class="checklist-item ${isDoneClass}" onclick="toggleCheck('denmark_location_checklist', ${idx}, this)">
+                        <input type="checkbox" ${isChecked} onclick="event.stopPropagation(); toggleCheck('denmark_location_checklist', ${idx}, this.parentElement)">
+                        <div class="location-info">
+                            <span class="location-name">${item.title}</span>
+                            <span class="location-sub">${item.sub}</span>
+                        </div>
+                        <a href="${item.maps}" target="_blank" rel="noopener" class="maps-btn" onclick="event.stopPropagation()">🗺️ Navigeer</a>
+                    </li>
+                `;
+            }).join('');
+
+            // Food
+            const foodUl = document.getElementById('food-checklist');
+            const foodSaved = JSON.parse(localStorage.getItem('denmark_food_checklist') || '{}');
+            foodUl.innerHTML = foodItems.map((item, idx) => {
+                const isChecked = foodSaved[idx] ? 'checked' : '';
+                const isDoneClass = foodSaved[idx] ? 'done' : '';
+                return `
+                    <li class="checklist-item ${isDoneClass}" onclick="toggleCheck('denmark_food_checklist', ${idx}, this)">
+                        <input type="checkbox" ${isChecked} onclick="event.stopPropagation(); toggleCheck('denmark_food_checklist', ${idx}, this.parentElement)">
+                        <span>${item}</span>
+                    </li>
+                `;
+            }).join('');
+
+            // Packing with Assignment
+            const packUl = document.getElementById('packing-checklist');
+            const packSaved = JSON.parse(localStorage.getItem('denmark_packing_checklist') || '{}');
+            const assignSaved = JSON.parse(localStorage.getItem('denmark_packing_assignments') || '{}');
+
+            packUl.innerHTML = packingItems.map((item, idx) => {
+                const isChecked = packSaved[idx] ? 'checked' : '';
+                const isDoneClass = packSaved[idx] ? 'done' : '';
+                const assigned = assignSaved[idx] || '';
+
+                return `
+                    <li class="checklist-item ${isDoneClass}" onclick="toggleCheck('denmark_packing_checklist', ${idx}, this)">
+                        <input type="checkbox" ${isChecked} onclick="event.stopPropagation(); toggleCheck('denmark_packing_checklist', ${idx}, this.parentElement)">
+                        <span style="flex-grow:1;">${item}</span>
+                        <select class="assign-select" onclick="event.stopPropagation()" onchange="assignPacker(${idx}, this.value)">
+                            <option value="">Iedereen / Onbekend</option>
+                            ${members.map(m => `<option value="${m}" ${assigned === m ? 'selected' : ''}>${m}</option>`).join('')}
+                        </select>
+                    </li>
+                `;
+            }).join('');
+        }
+
+        function toggleCheck(storageKey, index, element) {
+            const checkbox = element.querySelector('input[type="checkbox"]');
+            if (event.target !== checkbox) {
+                checkbox.checked = !checkbox.checked;
+            }
+            if (checkbox.checked) {
+                element.classList.add('done');
+            } else {
+                element.classList.remove('done');
+            }
+            const savedState = JSON.parse(localStorage.getItem(storageKey) || '{}');
+            savedState[index] = checkbox.checked;
+            localStorage.setItem(storageKey, JSON.stringify(savedState));
+        }
+
+        function assignPacker(idx, person) {
+            const assignSaved = JSON.parse(localStorage.getItem('denmark_packing_assignments') || '{}');
+            assignSaved[idx] = person;
+            localStorage.setItem('denmark_packing_assignments', JSON.stringify(assignSaved));
+        }
+
+        // EXPENSE SPLITTER LOGIC
+        function applyPreset(desc, amount, curr) {
+            document.getElementById('exp-desc').value = desc;
+            document.getElementById('exp-amount').value = amount;
+            document.getElementById('exp-currency').value = curr;
+        }
+
+        function selectAllMembers(checked) {
+            document.querySelectorAll('#exp-for-group input[type="checkbox"]').forEach(cb => cb.checked = checked);
+        }
+
+        function getExpenses() {
+            return JSON.parse(localStorage.getItem('denmark_expenses') || '[]');
+        }
+
+        function saveExpenses(expenses) {
+            localStorage.setItem('denmark_expenses', JSON.stringify(expenses));
+            renderExpenses();
+        }
+
+        function addExpense(e) {
+            e.preventDefault();
+            const desc = document.getElementById('exp-desc').value.trim();
+            const rawAmount = parseFloat(document.getElementById('exp-amount').value);
+            const currency = document.getElementById('exp-currency').value;
+            const payer = document.getElementById('exp-payer').value;
+
+            const selectedFor = [];
+            document.querySelectorAll('#exp-for-group input[type="checkbox"]:checked').forEach(cb => {
+                selectedFor.push(cb.value);
+            });
+
+            if (!desc || isNaN(rawAmount) || selectedFor.length === 0) {
+                alert("Vul een geldige omschrijving en bedrag in, en kies minimaal 1 persoon.");
+                return;
+            }
+
+            const eurAmount = currency === 'DKK' ? (rawAmount / RATE) : rawAmount;
+
+            const newExp = {
+                id: Date.now(),
+                desc,
+                rawAmount,
+                currency,
+                eurAmount,
+                payer,
+                selectedFor
+            };
+
+            const expenses = getExpenses();
+            expenses.push(newExp);
+            saveExpenses(expenses);
+
+            document.getElementById('exp-desc').value = '';
+            document.getElementById('exp-amount').value = '';
+        }
+
+        function deleteExpense(id) {
+            const expenses = getExpenses().filter(x => x.id !== id);
+            saveExpenses(expenses);
+        }
+
+        function renderExpenses() {
+            const expenses = getExpenses();
+
+            // Total calculations
+            let totalEur = 0;
+            const paidBy = { Wout: 0, Marcel: 0, Robin: 0, Dion: 0 };
+            const consumedBy = { Wout: 0, Marcel: 0, Robin: 0, Dion: 0 };
+
+            expenses.forEach(exp => {
+                totalEur += exp.eurAmount;
+                if (paidBy[exp.payer] !== undefined) {
+                    paidBy[exp.payer] += exp.eurAmount;
+                }
+
+                const share = exp.eurAmount / exp.selectedFor.length;
+                exp.selectedFor.forEach(m => {
+                    if (consumedBy[m] !== undefined) {
+                        consumedBy[m] += share;
+                    }
+                });
+            });
+
+            document.getElementById('total-cost-val').innerText = `€ ${totalEur.toFixed(2)}`;
+            document.getElementById('avg-cost-val').innerText = `€ ${(totalEur / 4).toFixed(2)}`;
+
+            // Render Balances
+            const balanceBody = document.getElementById('person-balance-body');
+            balanceBody.innerHTML = members.map(m => {
+                const net = paidBy[m] - consumedBy[m];
+                const netColor = net >= 0 ? 'var(--success)' : 'var(--danger)';
+                const sign = net > 0 ? '+' : '';
+
+                return `
+                    <tr>
+                        <td><strong>${m}</strong></td>
+                        <td>€ ${paidBy[m].toFixed(2)}</td>
+                        <td>€ ${consumedBy[m].toFixed(2)}</td>
+                        <td style="color:${netColor}; font-weight:bold;">${sign}€ ${net.toFixed(2)}</td>
+                    </tr>
+                `;
+            }).join('');
+
+            // Minimal Debt Settlement
+            renderSettlements(paidBy, consumedBy);
+
+            // Expense Table
+            const expBody = document.getElementById('expense-list-body');
+            expBody.innerHTML = expenses.map(exp => `
+                <tr>
+                    <td>${exp.desc}</td>
+                    <td>${exp.currency === 'DKK' ? exp.rawAmount.toFixed(2) + ' kr' : '€ ' + exp.rawAmount.toFixed(2)}</td>
+                    <td>€ ${exp.eurAmount.toFixed(2)}</td>
+                    <td><strong style="color:var(--primary)">${exp.payer}</strong></td>
+                    <td style="font-size:0.8rem;">${exp.selectedFor.join(', ')}</td>
+                    <td><button class="btn-danger" onclick="deleteExpense(${exp.id})">✕</button></td>
+                </tr>
+            `).join('');
+        }
+
+        function renderSettlements(paidBy, consumedBy) {
+            const balances = {};
+            members.forEach(m => {
+                balances[m] = paidBy[m] - consumedBy[m];
+            });
+
+            const debtors = [];
+            const creditors = [];
+
+            members.forEach(m => {
+                if (balances[m] < -0.01) debtors.push({ name: m, amount: -balances[m] });
+                if (balances[m] > 0.01) creditors.push({ name: m, amount: balances[m] });
+            });
+
+            debtors.sort((a, b) => b.amount - a.amount);
+            creditors.sort((a, b) => b.amount - a.amount);
+
+            const settlements = [];
+            let i = 0, j = 0;
+
+            while (i < debtors.length && j < creditors.length) {
+                const pay = Math.min(debtors[i].amount, creditors[j].amount);
+                settlements.push(`${debtors[i].name} betaalt aan ${creditors[j].name}: € ${pay.toFixed(2)}`);
+
+                debtors[i].amount -= pay;
+                creditors[j].amount -= pay;
+
+                if (debtors[i].amount < 0.01) i++;
+                if (creditors[j].amount < 0.01) j++;
+            }
+
+            const settleDiv = document.getElementById('settlement-list');
+            if (settlements.length === 0) {
+                settleDiv.innerHTML = `<p style="font-size:0.85rem; color:var(--text-muted)">Iedereen staat quitte! 🎉</p>`;
+            } else {
+                settleDiv.innerHTML = settlements.map(s => `
+                    <div class="settle-item">
+                        <span>💸 ${s}</span>
+                    </div>
+                `).join('');
+            }
+        }
+
+        // CATCH LOGBOOK & LEADERBOARD
+        let selectedWeightVal = 0.4; // Default to 'Tot 500g'
+
+        function selectWeightCat(btn, categoryLabel, numericVal) {
+            document.querySelectorAll('.weight-chip').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            document.getElementById('catch-weight-cat').value = categoryLabel;
+            selectedWeightVal = numericVal;
+        }
+
+        function getCatches() {
+            return JSON.parse(localStorage.getItem('denmark_catches') || '[]');
+        }
+
+        function saveCatches(catches) {
+            localStorage.setItem('denmark_catches', JSON.stringify(catches));
+            renderCatches();
+        }
+
+        function addCatch(e) {
+            e.preventDefault();
+            const angler = document.getElementById('catch-angler').value;
+            const species = document.getElementById('catch-species').value;
+            const length = parseFloat(document.getElementById('catch-length').value);
+            const weightCat = document.getElementById('catch-weight-cat').value || 'Tot 500g';
+            const location = document.getElementById('catch-location').value;
+            const bait = document.getElementById('catch-bait').value.trim();
+            const note = document.getElementById('catch-note').value.trim();
+
+            if (isNaN(length)) {
+                alert("Vul een geldige lengte in.");
+                return;
+            }
+
+            const newCatch = {
+                id: Date.now(),
+                angler, species, length, weightCat, weightVal: selectedWeightVal, location, bait, note
+            };
+
+            const catches = getCatches();
+            catches.push(newCatch);
+            saveCatches(catches);
+
+            document.getElementById('catch-length').value = '';
+            document.getElementById('catch-bait').value = '';
+            document.getElementById('catch-note').value = '';
+        }
+
+        function deleteCatch(id) {
+            const catches = getCatches().filter(x => x.id !== id);
+            saveCatches(catches);
+        }
+
+        function renderCatches() {
+            const catches = getCatches();
+
+            // Stats
+            const counts = { Wout: 0, Marcel: 0, Robin: 0, Dion: 0 };
+            let maxLenCatch = null;
+            let maxWeightCatch = null;
+            const baitCounts = {};
+
+            catches.forEach(c => {
+                if (counts[c.angler] !== undefined) counts[c.angler]++;
+                if (!maxLenCatch || c.length > maxLenCatch.length) maxLenCatch = c;
+                
+                const wVal = c.weightVal || 0;
+                if (!maxWeightCatch || wVal > (maxWeightCatch.weightVal || 0)) {
+                    maxWeightCatch = c;
+                }
+
+                if (c.bait) {
+                    baitCounts[c.bait] = (baitCounts[c.bait] || 0) + 1;
+                }
+            });
+
+            // Top Catcher
+            let topAngler = "-";
+            let topCount = 0;
+            Object.keys(counts).forEach(m => {
+                if (counts[m] > topCount) {
+                    topCount = counts[m];
+                    topAngler = m;
+                }
+            });
+
+            // Top Bait
+            let topBait = "-";
+            let topBaitNum = 0;
+            Object.keys(baitCounts).forEach(b => {
+                if (baitCounts[b] > topBaitNum) {
+                    topBaitNum = baitCounts[b];
+                    topBait = b;
+                }
+            });
+
+            document.getElementById('top-catcher-name').innerText = topAngler;
+            document.getElementById('top-catcher-count').innerText = `${topCount} vissen`;
+
+            document.getElementById('top-length-name').innerText = maxLenCatch ? maxLenCatch.angler : "-";
+            document.getElementById('top-length-val').innerText = maxLenCatch ? `${maxLenCatch.length} cm (${maxLenCatch.species})` : "0 cm";
+
+            document.getElementById('top-weight-name').innerText = maxWeightCatch ? maxWeightCatch.angler : "-";
+            document.getElementById('top-weight-val').innerText = maxWeightCatch ? `${maxWeightCatch.weightCat} (${maxWeightCatch.species})` : "-";
+
+            document.getElementById('total-catches-val').innerText = catches.length;
+            document.getElementById('top-bait-val').innerText = `Topaas: ${topBait}`;
+
+            // Render Table
+            const body = document.getElementById('catches-list-body');
+            body.innerHTML = catches.map(c => `
+                <tr>
+                    <td><strong style="color:var(--primary)">${c.angler}</strong></td>
+                    <td><strong>${c.species}</strong></td>
+                    <td>${c.length} cm</td>
+                    <td><span class="badge" style="background:rgba(56,189,248,0.2); color:var(--primary);">${c.weightCat || 'Tot 500g'}</span></td>
+                    <td>${c.bait}</td>
+                    <td>${c.location}</td>
+                    <td style="font-size:0.8rem; color:var(--text-muted);">${c.note || '-'}</td>
+                    <td><button class="btn-danger" onclick="deleteCatch(${c.id})">✕</button></td>
+                </tr>
+            `).join('');
+        }
+
+        // INITIAL LOAD
+        window.onload = function() {
+            renderChecklists();
+            renderExpenses();
+            renderCatches();
+        };
+    </script>
+</body>
+</html>
