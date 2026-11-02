@@ -1483,131 +1483,118 @@
                 `).join('');
             }
         }
+// CATCH LOGBOOK & LEADERBOARD
 
-        // CATCH LOGBOOK & LEADERBOARD
-        let selectedWeightVal = 0.4; // Default to 'Tot 500g'
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbysOHX4wnNJCahuCdnITZzucBH-mVgU58NvJg77Q3z6PLPbJAkQI4PSKHblft6xcnF7OQ/exec";
 
-        function selectWeightCat(btn, categoryLabel, numericVal) {
-            document.querySelectorAll('.weight-chip').forEach(b => b.classList.remove('selected'));
-            btn.classList.add('selected');
-            document.getElementById('catch-weight-cat').value = categoryLabel;
-            selectedWeightVal = numericVal;
-        }
+let selectedWeightVal = 0.4;
 
-        function getCatches() {
-            return JSON.parse(localStorage.getItem('denmark_catches') || '[]');
-        }
+function selectWeightCat(btn, categoryLabel, numericVal) {
+    document.querySelectorAll('.weight-chip').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    document.getElementById('catch-weight-cat').value = categoryLabel;
+    selectedWeightVal = numericVal;
+}
 
-        function saveCatches(catches) {
-            localStorage.setItem('denmark_catches', JSON.stringify(catches));
-            renderCatches();
-        }
+async function addCatch(e) {
 
-        function addCatch(e) {
-            e.preventDefault();
-            const angler = document.getElementById('catch-angler').value;
-            const species = document.getElementById('catch-species').value;
-            const length = parseFloat(document.getElementById('catch-length').value);
-            const weightCat = document.getElementById('catch-weight-cat').value || 'Tot 500g';
-            const location = document.getElementById('catch-location').value;
-            const bait = document.getElementById('catch-bait').value.trim();
-            const note = document.getElementById('catch-note').value.trim();
+    e.preventDefault();
 
-            if (isNaN(length)) {
-                alert("Vul een geldige lengte in.");
-                return;
+    const data = {
+        visser: document.getElementById('catch-angler').value,
+        vissoort: document.getElementById('catch-species').value,
+        lengte: document.getElementById('catch-length').value,
+        gewicht: document.getElementById('catch-weight-cat').value,
+        locatie: document.getElementById('catch-location').value
+    };
+
+    try {
+
+        await fetch(SCRIPT_URL, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        });
+
+        alert("✅ Vangst opgeslagen");
+
+        document.getElementById('catch-length').value = "";
+        document.getElementById('catch-bait').value = "";
+        document.getElementById('catch-note').value = "";
+
+        renderCatches();
+
+    } catch(err) {
+
+        alert("Fout bij opslaan");
+
+    }
+}
+
+function deleteCatch() {
+    alert("Verwijderen via Google Sheet");
+}
+
+async function renderCatches() {
+
+    try {
+
+        const response = await fetch(SCRIPT_URL);
+        const catches = await response.json();
+
+        document.getElementById('total-catches-val').innerText =
+            catches.length;
+
+        let topVisser = "-";
+        let topAantal = 0;
+
+        const telling = {};
+
+        catches.forEach(c => {
+            telling[c.visser] = (telling[c.visser] || 0) + 1;
+        });
+
+        Object.keys(telling).forEach(v => {
+            if (telling[v] > topAantal) {
+                topAantal = telling[v];
+                topVisser = v;
             }
+        });
 
-            const newCatch = {
-                id: Date.now(),
-                angler, species, length, weightCat, weightVal: selectedWeightVal, location, bait, note
-            };
+        document.getElementById('top-catcher-name').innerText =
+            topVisser;
 
-            const catches = getCatches();
-            catches.push(newCatch);
-            saveCatches(catches);
+        document.getElementById('top-catcher-count').innerText =
+            `${topAantal} vissen`;
 
-            document.getElementById('catch-length').value = '';
-            document.getElementById('catch-bait').value = '';
-            document.getElementById('catch-note').value = '';
-        }
+        const body =
+            document.getElementById('catches-list-body');
 
-        function deleteCatch(id) {
-            const catches = getCatches().filter(x => x.id !== id);
-            saveCatches(catches);
-        }
-
-        function renderCatches() {
-            const catches = getCatches();
-
-            // Stats
-            const counts = { Wout: 0, Marcel: 0, Robin: 0, Dion: 0 };
-            let maxLenCatch = null;
-            let maxWeightCatch = null;
-            const baitCounts = {};
-
-            catches.forEach(c => {
-                if (counts[c.angler] !== undefined) counts[c.angler]++;
-                if (!maxLenCatch || c.length > maxLenCatch.length) maxLenCatch = c;
-                
-                const wVal = c.weightVal || 0;
-                if (!maxWeightCatch || wVal > (maxWeightCatch.weightVal || 0)) {
-                    maxWeightCatch = c;
-                }
-
-                if (c.bait) {
-                    baitCounts[c.bait] = (baitCounts[c.bait] || 0) + 1;
-                }
-            });
-
-            // Top Catcher
-            let topAngler = "-";
-            let topCount = 0;
-            Object.keys(counts).forEach(m => {
-                if (counts[m] > topCount) {
-                    topCount = counts[m];
-                    topAngler = m;
-                }
-            });
-
-            // Top Bait
-            let topBait = "-";
-            let topBaitNum = 0;
-            Object.keys(baitCounts).forEach(b => {
-                if (baitCounts[b] > topBaitNum) {
-                    topBaitNum = baitCounts[b];
-                    topBait = b;
-                }
-            });
-
-            document.getElementById('top-catcher-name').innerText = topAngler;
-            document.getElementById('top-catcher-count').innerText = `${topCount} vissen`;
-
-            document.getElementById('top-length-name').innerText = maxLenCatch ? maxLenCatch.angler : "-";
-            document.getElementById('top-length-val').innerText = maxLenCatch ? `${maxLenCatch.length} cm (${maxLenCatch.species})` : "0 cm";
-
-            document.getElementById('top-weight-name').innerText = maxWeightCatch ? maxWeightCatch.angler : "-";
-            document.getElementById('top-weight-val').innerText = maxWeightCatch ? `${maxWeightCatch.weightCat} (${maxWeightCatch.species})` : "-";
-
-            document.getElementById('total-catches-val').innerText = catches.length;
-            document.getElementById('top-bait-val').innerText = `Topaas: ${topBait}`;
-
-            // Render Table
-            const body = document.getElementById('catches-list-body');
-            body.innerHTML = catches.map(c => `
-                <tr>
-                    <td><strong style="color:var(--primary)">${c.angler}</strong></td>
-                    <td><strong>${c.species}</strong></td>
-                    <td>${c.length} cm</td>
-                    <td><span class="badge" style="background:rgba(56,189,248,0.2); color:var(--primary);">${c.weightCat || 'Tot 500g'}</span></td>
-                    <td>${c.bait}</td>
-                    <td>${c.location}</td>
-                    <td style="font-size:0.8rem; color:var(--text-muted);">${c.note || '-'}</td>
-                    <td><button class="btn-danger" onclick="deleteCatch(${c.id})">✕</button></td>
-                </tr>
+        body.innerHTML =
+            catches.reverse().map(c => `
+            <tr>
+                <td><strong style="color:var(--primary)">
+                    ${c.visser}
+                </strong></td>
+                <td>${c.vissoort}</td>
+                <td>${c.lengte} cm</td>
+                <td>${c.gewicht}</td>
+                <td>-</td>
+                <td>${c.locatie}</td>
+                <td>-</td>
+                <td></td>
+            </tr>
             `).join('');
-        }
 
+    } catch(err) {
+
+        console.error(err);
+
+    }
+}
+        
         // INITIAL LOAD
         window.onload = function() {
             renderChecklists();
